@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization; // Ditambahkan untuk menggunakan [Authorize]
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Npgsql;
@@ -7,12 +8,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
-//[Route("api/[controller]")]
-//[ApiController]
-//public class ApiController : ControllerBase
-
-[Route("api")]
+[Route("api")] // Base route untuk semua endpoint di controller ini
 [ApiController]
+[Authorize] // Lindungi semua endpoint di controller ini dengan autentikasi JWT
 public class ApiController : ControllerBase
 {
     private readonly string _connectionString;
@@ -24,6 +22,7 @@ public class ApiController : ControllerBase
         _logger = logger;
     }
 
+    // Endpoint untuk menjalankan query
     [HttpPost("query")]
     public async Task<IActionResult> ExecuteQuery([FromBody] QueryRequest request)
     {
@@ -89,5 +88,12 @@ public class ApiController : ControllerBase
                 Data = null
             });
         }
+    }
+
+    // Endpoint contoh yang dilindungi
+    [HttpGet("secure")]
+    public IActionResult Secure()
+    {
+        return Ok(new { Message = "This is a secure endpoint" });
     }
 }

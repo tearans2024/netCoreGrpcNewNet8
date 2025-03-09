@@ -1,6 +1,6 @@
 ﻿namespace netCoreGrpcNewNet8.Tests.UnitTests
 {
-    public class Class
+    public class ProductServiceTests
     {
     }
 }
